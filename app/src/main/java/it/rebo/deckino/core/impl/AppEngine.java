@@ -38,6 +38,7 @@ public class AppEngine implements Engine {
                 break;
             }
         }
+        this.stop();
     }
 
     /**
@@ -45,7 +46,7 @@ public class AppEngine implements Engine {
      */
     @Override
     public void stop() {
-        Objects.requireNonNull(this.view).close();
+        this.view.close();
     }
 
 }
