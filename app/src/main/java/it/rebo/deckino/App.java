@@ -1,5 +1,8 @@
 package it.rebo.deckino;
 
+import it.rebo.deckino.core.impl.AppEngine;
+import it.rebo.deckino.view.impl.AppView;
+
 /**
  * Entry point of the app, it creates a controller and launches the GUI
  * so that the game can start.
@@ -17,6 +20,6 @@ public final class App {
      * @param args unused
      */
     public static void main(final String[] args) {
-        System.out.println("Hello World"); // NOPMD suppress false positive
+        new AppEngine(new AppView()).run();
     }
 }
