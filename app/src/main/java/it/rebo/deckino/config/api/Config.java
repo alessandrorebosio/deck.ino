@@ -2,6 +2,8 @@ package it.rebo.deckino.config.api;
 
 import java.util.Optional;
 
+import it.rebo.deckino.model.api.action.Action;
+
 /**
  * Interface for configuration management operations.
  * Provides methods to access serial communication settings.
@@ -28,22 +30,11 @@ public interface Config {
     Optional<Integer> baud();
 
     /**
-     * Retrieves the value of a specific peripheral button from the configuration.
-     * 
-     * <p>
-     * This method looks up the specified button identifier in the peripheral
-     * configuration
-     * and returns its associated value if present and valid.
-     * </p>
+     * Retrieves an action by its identifier from the configuration.
      *
-     * @param id the identifier of the button to retrieve (e.g., "btn:0",
-     *           "btn:1")
-     * @return an Optional containing the button value if the button exists and has
-     *         a non-blank value,
-     *         empty Optional if the button doesn't exist, has a null value, or has
-     *         a blank value
-     * @throws NullPointerException if the buttonId parameter is null
+     * @param id the identifier of the action
+     * @return an Optional containing the Action if found and valid, empty otherwise
      */
-    Optional<String> value(String id);
+    Optional<Action> action(String id);
 
 }

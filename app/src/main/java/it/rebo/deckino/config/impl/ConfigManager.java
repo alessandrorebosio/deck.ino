@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import it.rebo.deckino.config.api.Config;
+import it.rebo.deckino.model.api.action.Action;
 
 /**
  * Implementation of the Config interface for managing application configuration
@@ -88,16 +89,15 @@ public class ConfigManager implements Config {
      * {@inheritDoc}
      */
     @Override
-    public Optional<String> value(final String id) {
-        return this.getRawData("peripheral")
+    public Optional<Action> action(final String id) {
+        return this.getRawData("actions")
                 .filter(JsonElement::isJsonObject)
                 .map(JsonElement::getAsJsonObject)
                 .map(peripheral -> peripheral.get(id))
                 .filter(button -> button != null && button.isJsonObject())
-                .map(button -> button.getAsJsonObject().get("value"))
-                .filter(value -> value != null && value.isJsonPrimitive())
-                .map(JsonElement::getAsString)
-                .filter(value -> !value.isBlank());
+                .map(JsonElement::getAsJsonObject)
+                .filter(obj -> isValidJsonString(obj, "type") && isValidJsonString(obj, "value"))
+                .map(obj -> Action.of(obj.get("type").getAsString(), obj.get("value").getAsString()));
     }
 
     /**
@@ -120,6 +120,24 @@ public class ConfigManager implements Config {
         } catch (final IOException e) {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Checks if the specified JSON object contains a valid string value for the
+     * given key.
+     *
+     * @param obj the JSON object to check
+     * @param key the key to validate
+     * @return true if the key exists and contains a non-blank string value, false
+     *         otherwise
+     */
+    private boolean isValidJsonString(final JsonObject obj, final String key) {
+        final JsonElement element = obj.get(key);
+        if (element == null || !element.isJsonPrimitive()) {
+            return false;
+        }
+        final String value = element.getAsString();
+        return value != null && !value.isBlank();
     }
 
 }
