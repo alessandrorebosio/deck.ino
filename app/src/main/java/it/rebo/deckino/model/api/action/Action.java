@@ -35,7 +35,7 @@ public interface Action {
             return (Action) clazz.getDeclaredConstructor(String.class).newInstance(value);
         } catch (final ClassNotFoundException | NoSuchMethodException | InstantiationException
                 | IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalArgumentException("Cannot create action: " + type, e);
+            return null;
         }
     }
 
